@@ -1,0 +1,5 @@
+# 忽略node包
+node_modules/
+
+# 忽略生成的静态文件
+_book/

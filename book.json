@@ -1,0 +1,72 @@
+{
+    "styles": {
+        "website": "styles/website.css"
+    },
+    "language" : "zh-hans",
+    "links" : {
+        "sidebar" : {
+            "首页" : "https://github.com/Jacky2"
+        }
+    },
+    "plugins": [
+        "-sharing", 
+        "sharing-plus",
+        "anchor-navigation-ex",
+        "splitter",
+        "page-footer-ex"
+    ],
+    "pluginsConfig": {
+        "sharing": {
+            "douban": false,
+            "google": true,
+            "facebook": true,
+            "hatenaBookmark": false,
+            "instapaper": false,
+            "line": false,
+            "linkedin": false,
+            "messenger": false,
+            "pocket": false,
+            "qq": false,
+            "qzone": false,
+            "stumbleupon": false,
+            "twitter": false,
+            "viber": false,
+            "vk": false,
+            "weibo": false,
+            "whatsapp": false,
+            "all": [
+                "google","facebook"
+            ]
+        },
+    	"theme-default": {
+        	"showLevel": false
+   		 },
+        "page-footer-ex": {
+            "copyright": "[jetinzhang](https://github.com/Jacky2)",
+            "markdown": true,
+            "update_label": "<i>更新于</i>",
+            "update_format": "YYYY-MM-DD HH:mm:ss"
+        },
+        "anchor-navigation-ex": {
+            "showLevel": false,
+            "associatedWithSummary": true,
+            "printLog": false,
+            "multipleH1": true,
+            "mode": "float",
+            "showGoTop":true,
+            "float": {
+                "floatIcon": "fa fa-navicon",
+                "showLevelIcon": false,
+                "level1Icon": "fa fa-hand-o-right",
+                "level2Icon": "fa fa-hand-o-right",
+                "level3Icon": "fa fa-hand-o-right"
+            },
+            "pageTop": {
+                "showLevelIcon": false,
+                "level1Icon": "fa fa-hand-o-right",
+                "level2Icon": "fa fa-hand-o-right",
+                "level3Icon": "fa fa-hand-o-right"
+            }
+        }
+    }
+}
