@@ -13,7 +13,7 @@
 
 ## 2. 安装需具备的知识
 
-    Linux, Ansible,
+    Linux, Ansible.
 
 ## 3. 环境说明
 | 主机名 | ip地址 | 角色 | 系统 |
@@ -33,7 +33,7 @@
 ## 5. 初始化环境 
 ==注意：所有k8s集群服务器上执行--除了ops-01这一台Kubespray_admin服务器==
 ### 5.1. 更新内核
-    ```
+
     centos7.5可通过elrepo源升级到4.4
     
     # 配置安装elrepo源
@@ -46,9 +46,9 @@
     
     PS: 因内核4.4无法满足我们现有的需求，我通过编译安装了Linux内核4.19.27
     步骤省略（通过Linux官方内核进行编译最新版本）
-    ```
+
 ### 5.2. 关闭防火墙
-    ```
+
     systemctl stop firewalld
     systemctl disable firewalld
     
@@ -57,9 +57,9 @@
     
     # 永久关闭selinux (重启生效)  /etc/sysconfig/selinux 是一个软链接文件所以要加上 --follow-symlinks
     sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
-    ```
+
 ### 5.3. 内核配置
-    ```
+
     # 增加内核配置
     vim /etc/sysctl.conf
     
@@ -69,14 +69,14 @@
     
     # 使其内核配置生效
     sysctl -p
-    ```
+
 ### 5.4. 关闭虚拟内存
-    ```
+
     swapoff -a
     修改/etc/fstab 注释掉有swap的那一行
-    ```
+
 ### 5.5. 配置yum源仓库
-    ```
+
     # 备份原有yum源
 
     mkdir /etc/yum.repos.d/backup
@@ -87,15 +87,15 @@
 
     # 重建缓存
     yum clean all && yum makecache
-    ```
+
 ### 5.6. 安装必需软件
-    ```
+
     # 安装 centos的epel源
     yum -y install epel-release
 
     yum install -y yum-utils python-pip python37 python-netaddr python37-pip
     pip install --upgrade pip && pip install netaddr jinja2
-    ```
+
 ### 5.7. 安装docker
 
     安装docker版本18.06，此处是下载特定版本进行rpm安装：
@@ -110,7 +110,7 @@
     注意：自动化安装后会生产/etc/systemd/system/docker.service文件，如果你安装docker创建了/usr/lib/systemd/system/docker.service文件可能docker启动会有冲突。
     
     自动安装的相关参数配置目录
-    ```
+
     [root@master1 ~]# ll /etc/systemd/system/docker.service.d/
     
     total 8
@@ -128,10 +128,10 @@
         --dns-search default.svc.cluster.local --dns-search svc.cluster.local  \
         --dns-opt ndots:2 --dns-opt timeout:2 --dns-opt attempts:2  \
     
-    ```
+
     
     cat /etc/systemd/system/docker.service
-    ```
+
     [Unit]
     Description=Docker Application Container Engine
     Documentation=http://docs.docker.com
@@ -161,7 +161,7 @@
 
     [Install]
     WantedBy=multi-user.target
-    ```
+
     
     遇到问题：直接docker运行的镜像无法访问外部网络。因为经过了kubespray的配置网络和docker原有的网络不同导致的问题。
     要修改docker.service中的 $DOCKER_NETWORK_OPTIONS
@@ -177,16 +177,16 @@
     
     增加配置(默认 --mtu=1500需要修改的话可以后面增加参数 --mtu=1450进行修改)
 
-    ```
+
     cat /etc/systemd/system/docker.service.d/docker-network.conf
     
     [Service]
     Environment="DOCKER_NETWORK_OPTIONS= --bip=10.233.64.1/24"
-    ```
+
 
 ### 5.8. 配置docker
 
-    ```
+
     # Docker从1.13版本开始调整了默认的防火墙规则，禁用了iptables filter表中FOWARD链，这样会引起Kubernetes集群中跨Node的Pod无法通信，在各个Docker节点执行下面的命令：
     iptables -P FORWARD ACCEPT
     
@@ -212,30 +212,28 @@
         "max-file": "6"
          },
     
-    ```
 
-1. **在服务器ops-01 IP：10.10.4.77上安装docker repo私库**
 
-    ```
+### 5.9. 在服务器ops-01 IP：10.10.4.77上安装docker repo私库
+
     假设docker私库域名为：registry-vpc.cn-shenzhen.aliyuncs.com
     安装过程省略。
-    ```
 
 ## 6. 有服务器(ops-01)安装kubespray
 
-    1. **安装所需软件**
+### 安装所需软件
 
-    ```
+
     # sshpass 这个是我配置ansible-playbook使用账号密码登录所以需要安装密码登录支持的软件
     yum install -y python-pip python37 python37-pip ansible git sshpass
 
     # jinja2和netaddr也可通过yum instal -y python-netaddr python-jinja2 进行安装,但建议使用pip安装
     pip install --upgrade pip && pip install netaddr jinja2
-    ```
 
-    2. **获取kubespray并进行配置**
+
+### 获取kubespray并进行配置
       
-      ```
+  
       git clone https://github.com/kubernetes-sigs/kubespray.git
       
       # 安装 kubespray 依赖，若无特殊说明，后续操作均在~/kubespray目录下执行
@@ -549,8 +547,6 @@
       
       # 新增的文件夹
       inventory/dev-cluster
-      ```
-
 
 ## 7. kubespray部署高可用原理
     
